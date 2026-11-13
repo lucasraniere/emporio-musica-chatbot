@@ -1,9 +1,9 @@
 import re
-from datetime import date, datetime
-from zoneinfo import ZoneInfo
+from datetime import date
 
 from langchain_core.tools import tool
 
+from emporio.config import settings
 from emporio.db_helper import query
 from emporio.tools.products import _brl
 
@@ -22,7 +22,8 @@ STATUS = {
 
 
 def _today() -> date:
-    return datetime.now(ZoneInfo("America/Campo_Grande")).date()
+    # Same clock as the system prompt, so REFERENCE_DATE applies to both.
+    return settings.now().date()
 
 
 def _date(iso: str | None) -> str:

@@ -61,13 +61,14 @@ class Settings(BaseSettings):
     # "openrouter", "google" (Gemini API) or "anthropic" (Claude API). Each provider
     # needs its own key and its own model name format, so set LLM_PROVIDER and
     # LLM_MODEL together.
-    llm_provider: Literal["openrouter", "google", "anthropic"] = "openrouter"
+    llm_provider: Literal["openrouter", "google", "anthropic"] = "anthropic"
     openrouter_api_key: SecretStr | None = None
     google_api_key: SecretStr | None = None
     anthropic_api_key: SecretStr | None = None
 
-    # llm_model: str = "google/gemma-4-31b-it:free"
-    llm_model: str = "nvidia/nemotron-3.5-lightning:free"
+    # Default matches the default provider. Examples for the others:
+    # google: "gemini-3.5-flash-lite" | openrouter: "nvidia/nemotron-3.5-lightning:free"
+    llm_model: str = "claude-sonnet-5-5"
     llm_temperature: float = 0.0
 
     @model_validator(mode="after")

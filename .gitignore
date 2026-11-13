@@ -21,6 +21,7 @@ storage/
 *.sqlite3
 chroma/
 .chroma/
+.langgraph_api/
 
 # Editors
 .vscode/
