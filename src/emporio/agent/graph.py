@@ -29,6 +29,17 @@ def _default_llm() -> BaseChatModel:
             temperature=settings.llm_temperature,
             max_retries=2,
         )
+    if settings.llm_provider == "anthropic":
+        from langchain_anthropic import ChatAnthropic
+
+        # No temperature here: current Claude models reject non-default sampling
+        # parameters with a 400. max_tokens leaves room for the model's thinking.
+        return ChatAnthropic(
+            model=settings.llm_model,
+            api_key=settings.anthropic_api_key,
+            max_tokens=16000,
+            max_retries=2,
+        )
     return ChatOpenRouter(
         model=settings.llm_model,
         api_key=settings.openrouter_api_key,

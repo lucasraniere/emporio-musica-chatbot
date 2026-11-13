@@ -58,11 +58,13 @@ class Settings(BaseSettings):
         extra="ignore", # ignoring LANGSMITH keys
     )
 
-    # "openrouter" or "google" (Gemini API). Each provider needs its own key and
-    # its own model name format, so set LLM_PROVIDER and LLM_MODEL together.
-    llm_provider: Literal["openrouter", "google"] = "openrouter"
+    # "openrouter", "google" (Gemini API) or "anthropic" (Claude API). Each provider
+    # needs its own key and its own model name format, so set LLM_PROVIDER and
+    # LLM_MODEL together.
+    llm_provider: Literal["openrouter", "google", "anthropic"] = "openrouter"
     openrouter_api_key: SecretStr | None = None
     google_api_key: SecretStr | None = None
+    anthropic_api_key: SecretStr | None = None
 
     # llm_model: str = "google/gemma-4-31b-it:free"
     llm_model: str = "nvidia/nemotron-3.5-lightning:free"
@@ -70,9 +72,9 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _require_provider_key(self) -> "Settings":
-        key = self.google_api_key if self.llm_provider == "google" else self.openrouter_api_key
+        key = getattr(self, f"{self.llm_provider}_api_key")
         if key is None or not key.get_secret_value().strip():
-            name = "GOOGLE_API_KEY" if self.llm_provider == "google" else "OPENROUTER_API_KEY"
+            name = f"{self.llm_provider.upper()}_API_KEY"
             raise ValueError(f"LLM_PROVIDER={self.llm_provider} requires {name} in .env")
         return self
 
