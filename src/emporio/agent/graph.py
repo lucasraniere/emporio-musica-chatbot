@@ -19,6 +19,16 @@ def _now_text() -> str:
 
 
 def _default_llm() -> BaseChatModel:
+    if settings.llm_provider == "google":
+        # Imported here so the app still starts when only OpenRouter is installed.
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        return ChatGoogleGenerativeAI(
+            model=settings.llm_model,
+            google_api_key=settings.google_api_key,
+            temperature=settings.llm_temperature,
+            max_retries=2,
+        )
     return ChatOpenRouter(
         model=settings.llm_model,
         api_key=settings.openrouter_api_key,

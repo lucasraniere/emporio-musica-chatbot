@@ -1,7 +1,8 @@
 from pathlib import Path
+from typing import Literal
 
 from dotenv import load_dotenv
-from pydantic import SecretStr
+from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
@@ -57,10 +58,22 @@ class Settings(BaseSettings):
         extra="ignore", # ignoring LANGSMITH keys
     )
 
-    openrouter_api_key: SecretStr
+    # "openrouter" or "google" (Gemini API). Each provider needs its own key and
+    # its own model name format, so set LLM_PROVIDER and LLM_MODEL together.
+    llm_provider: Literal["openrouter", "google"] = "openrouter"
+    openrouter_api_key: SecretStr | None = None
+    google_api_key: SecretStr | None = None
 
     # llm_model: str = "google/gemma-4-31b-it:free"
     llm_model: str = "nvidia/nemotron-3.5-lightning:free"
     llm_temperature: float = 0.0
+
+    @model_validator(mode="after")
+    def _require_provider_key(self) -> "Settings":
+        key = self.google_api_key if self.llm_provider == "google" else self.openrouter_api_key
+        if key is None or not key.get_secret_value().strip():
+            name = "GOOGLE_API_KEY" if self.llm_provider == "google" else "OPENROUTER_API_KEY"
+            raise ValueError(f"LLM_PROVIDER={self.llm_provider} requires {name} in .env")
+        return self
 
 settings = Settings()

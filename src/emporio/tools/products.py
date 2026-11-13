@@ -130,6 +130,11 @@ def search_products(
     rows = query("SELECT * FROM product_catalog ORDER BY final_price_brl")
     if category:
         rows = [p for p in rows if p["category"] == category]
+        if not rows:
+            return (
+                f'A loja não tem nenhum produto cadastrado na categoria "{category}" no momento. '
+                "Não adianta buscar de novo com outros termos."
+            )
     if min_price is not None:
         rows = [p for p in rows if p["final_price_brl"] >= min_price]
     if max_price is not None:
@@ -142,8 +147,15 @@ def search_products(
         rows = [p for p in rows if p["is_available"]]
 
     if not rows:
-        note = f" ({len(hidden)} item(ns) indisponível(is) omitido(s))" if only_available and hidden else ""
-        return f"Nenhum produto encontrado com esses filtros{note}."
+        if only_available and hidden:
+            return (
+                f"Nenhum produto disponível com esses filtros, mas {len(hidden)} item(ns) "
+                "indisponível(is) corresponde(m). Use only_available=False para ver quais são."
+            )
+        return (
+            "Nenhum produto encontrado com esses filtros. Se já tentou termos parecidos, "
+            "informe ao cliente que a loja não tem esse item no catálogo."
+        )
 
     lines = [
         f"- {p['name']} (ID {p['product_id']}) | {p['category']} | {_price(p)} | {_availability(p)}"
