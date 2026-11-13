@@ -1,0 +1,31 @@
+[project]
+name = "emporio-musica-chatbot"
+version = "0.1.0"
+description = "Agente de atendimento da Empório da Música (RAG + LangGraph)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # Agent orchestration
+    "langchain>=1.0",
+    "langgraph>=1.0",
+    "langgraph-checkpoint-sqlite>=2.0",
+    # LLM provider (swap or add another langchain-<provider> package if needed)
+    "langchain-anthropic>=1.0",
+    # RAG: PDF parsing, chunking, embeddings, vector store
+    "pymupdf4llm>=0.0.17",
+    "langchain-text-splitters>=1.0",
+    "langchain-huggingface>=1.0",
+    "sentence-transformers>=3.0",
+    "langchain-chroma>=1.0",
+    # Structured data
+    "pandas>=2.2",
+    # Config and CLI
+    "pydantic-settings>=2.5",
+    "rich>=13.9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.8",
+]

@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Generated artifacts (rebuilt by the ingest scripts)
+storage/
+*.db
+*.sqlite
+*.sqlite3
+chroma/
+.chroma/
+
+# Editors
+.vscode/
+.idea/

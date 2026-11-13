@@ -1,0 +1,14 @@
+# AI assistant task log
+
+Tasks done by Claude Code (Claude Fable 5.2) in this repository. The application code is written by hand; this file records only what the assistant did, to support the "Uso de assistentes de código" section of the README.
+
+## 2026-11-12
+
+| # | Task | Type | Files touched |
+|---|------|------|---------------|
+| 1 | Read the challenge PDF, the policy manual and the six CSVs; profiled the data for inconsistencies (stock vs. status, inactive promotions, order totals, duplicate email, conflicting contacts in the manual). | Analysis | none |
+| 2 | Proposed the architecture (single LangGraph tool-calling agent, RAG over the policy PDF with Chroma, typed SQLite tools for the CSVs, SQLite checkpointer) and a step-by-step build order. | Planning | none |
+| 3 | Added runtime and dev dependencies to `pyproject.toml` (not synced; `uv sync` left to the author). | Config | `pyproject.toml` |
+| 4 | Rewrote `.gitignore`: stopped ignoring `.python-version`; added `.venv`, `.env`, Python caches and generated artifacts (SQLite DB, Chroma index). | Config | `.gitignore` |
+| 5 | Renamed the CSVs, dropping the `desafio_tecnico_ai_eng - ` prefix (e.g. `products.csv`). Contents unchanged. | Data | `data/*.csv` |
+| 6 | Created this log. | Docs | `AI_TASKS.md` |
