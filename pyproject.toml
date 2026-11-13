@@ -9,8 +9,6 @@ dependencies = [
     "langchain>=1.0",
     "langgraph>=1.0",
     "langgraph-checkpoint-sqlite>=2.0",
-    # LLM provider (swap or add another langchain-<provider> package if needed)
-    "langchain-anthropic>=1.0",
     # RAG: PDF parsing, chunking, embeddings, vector store
     "pymupdf4llm>=0.0.17",
     "langchain-text-splitters>=1.0",
@@ -22,7 +20,16 @@ dependencies = [
     # Config and CLI
     "pydantic-settings>=2.5",
     "rich>=13.9",
+    "langchain-openrouter>=0.2.9",
+    "rapidocr>=3.10.0",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/emporio"]
 
 [dependency-groups]
 dev = [

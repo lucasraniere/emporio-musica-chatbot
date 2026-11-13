@@ -12,3 +12,13 @@ Tasks done by Claude Code (Claude Fable 5.2) in this repository. The application
 | 4 | Rewrote `.gitignore`: stopped ignoring `.python-version`; added `.venv`, `.env`, Python caches and generated artifacts (SQLite DB, Chroma index). | Config | `.gitignore` |
 | 5 | Renamed the CSVs, dropping the `desafio_tecnico_ai_eng - ` prefix (e.g. `products.csv`). Contents unchanged. | Data | `data/*.csv` |
 | 6 | Created this log. | Docs | `AI_TASKS.md` |
+| 7 | Reviewed the hand-written `src/config.py` and imported it to verify; found that `ROOT_DIR` resolved one level above the repo, so `.env` was not loaded. Reported only, no edits. | Review | none |
+| 8 | Re-checked the config after the author moved it to `src/emporio/config.py`; imported it and confirmed the root path, `.env`, data paths and LangSmith variables now resolve. Reported only, no edits. | Review | none |
+
+## 2026-11-13
+
+| # | Task | Type | Files touched |
+|---|------|------|---------------|
+| 9 | Verified the SQLite database built by the author's `build_db.py`: schema, row counts, cell-by-cell comparison with the CSVs, foreign keys, and the `product_catalog` view (availability, promotions, PIX price). No defects found, no edits. | Review | none |
+| 10 | Verified the Chroma index built by the author's `build_index.py`: 26 section chunks, no page-header noise, key facts present, and a 12-question retrieval test (10 hits; two weak rankings reported). No edits. | Review | none |
+| 11 | Re-tested retrieval after the author switched the embedding model to `intfloat/multilingual-e5-base` and rebuilt: confirmed 768-dim vectors and ran an 18-question test (16 hits at k=4, 17 at k=6). No edits. | Review | none |
