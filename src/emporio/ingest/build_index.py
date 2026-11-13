@@ -4,7 +4,7 @@ import shutil
 import pymupdf4llm
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings
+from emporio.rag.embeddings import get_embeddings
 from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 from emporio.config import settings
@@ -16,15 +16,6 @@ NOISE = re.compile(
     re.MULTILINE,
 )
 BOLD_HEADER = re.compile(r"^(#+) \*\*(.+?)\*\*\s*$", re.MULTILINE)
-
-def get_embeddings() -> HuggingFaceEmbeddings:
-    """Get the embeddings model."""
-    return HuggingFaceEmbeddings(
-        model_name=settings.embedding_model,
-        encode_kwargs={"normalize_embeddings": True, "prompt" : "passage: "},
-        query_encode_kwargs={"normalize_embeddings": True, "prompt" : "query: "},
-    )
-
 
 def pdf_to_markdown() -> str:
     """Convert the PDF to Markdown."""
