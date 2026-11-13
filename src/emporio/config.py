@@ -3,6 +3,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 ROOT_DIR = Path(__file__).resolve().parents[2] # adjusting root path
 ENV_FILE = ROOT_DIR / ".env"
@@ -10,6 +12,16 @@ ENV_FILE = ROOT_DIR / ".env"
 load_dotenv(ENV_FILE)
 
 class Settings(BaseSettings):
+    timezone: str = "America/Campo_Grande"
+    reference_date: date | None = None  # demo aid: pretend today is this date
+
+    def now(self) -> datetime:
+        now = datetime.now(ZoneInfo(self.timezone))
+        if self.reference_date:
+            d = self.reference_date
+            now = now.replace(year=d.year, month=d.month, day=d.day)
+        return now
+
     # inputs
     data_dir: Path = ROOT_DIR / "data"
     policies_filename: str = "politicas_da_loja.pdf"
@@ -47,7 +59,8 @@ class Settings(BaseSettings):
 
     openrouter_api_key: SecretStr
 
-    llm_model: str = "google/gemma-4-31b-it:free"
+    # llm_model: str = "google/gemma-4-31b-it:free"
+    llm_model: str = "nvidia/nemotron-3.5-lightning:free"
     llm_temperature: float = 0.0
 
 settings = Settings()

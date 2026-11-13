@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "emporio": "./src/emporio/agent/studio.py:graph"
+  },
+  "env": ".env"
+}
